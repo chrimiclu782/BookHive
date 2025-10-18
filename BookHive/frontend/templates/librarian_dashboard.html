@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Librarian Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, Librarian</h1>
+        <a href="/logout">Logout</a> | <a href="/orders">Manage Orders</a>
+
+        <h2>Add New Book</h2>
+        <form action="/add_book" method="post">
+            <input type="text" name="title" placeholder="Title" required><br>
+            <input type="text" name="author" placeholder="Author" required><br>
+            <input type="text" name="shelf" placeholder="Shelf" required><br>
+            <input type="number" name="total" placeholder="Total Copies" required><br>
+            <button type="submit">Add Book</button>
+        </form>
+
+        <h2>All Books</h2>
+        <table>
+            <tr><th>Title</th><th>Author</th><th>Shelf</th><th>Available/Total</th></tr>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.shelf_location }}</td>
+                <td>{{ book.available_copies }}/{{ book.total_copies }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h2>Borrowed Books</h2>
+        <table>
+            <tr><th>Student</th><th>Title</th><th>Due Date</th><th>Status</th><th>Action</th></tr>
+            {% for b in borrowed_books %}
+            <tr>
+                <td>{{ b.student.name }}</td>
+                <td>{{ b.book.title }}</td>
+                <td>{{ b.due_date.strftime('%Y-%m-%d') }}</td>
+                <td>{{ b.status }}</td>
+                <td>
+                    {% if b.status != 'returned' %}
+                        <a href="/return/{{ b.borrow_id }}">Return</a>
+                    {% else %}
+                        Returned
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
