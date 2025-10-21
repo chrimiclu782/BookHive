@@ -293,6 +293,7 @@ class StudentWindow(QWidget):
         - Book exists in catalog
         - Student hasn't already borrowed this book
         - Book is currently available (not borrowed by others)
+        - Student has not exceeded the maximum borrow limit of 3 books
         Calculates due date and updates database accordingly.
         """
         student_no = self._get_student_no()
@@ -311,6 +312,17 @@ class StudentWindow(QWidget):
         try:
             conn = connect_db()
             cursor = conn.cursor()
+
+            # Check if the student has already borrowed 3 books
+            cursor.execute("""
+                SELECT COUNT(*) FROM Borrowed
+                WHERE student_no = %s AND borrow_status = 'Borrowed'
+            """, (student_no,))
+            borrowed_count = cursor.fetchone()[0]
+            if borrowed_count >= 3:
+                QMessageBox.warning(self, "Borrow Limit Exceeded", "You can only borrow a maximum of 3 books at a time. Please return a book before borrowing another.")
+                conn.close()
+                return
 
             # Verify book exists in catalog
             cursor.execute("SELECT 1 FROM Books WHERE book_id = %s", (book_id,))
