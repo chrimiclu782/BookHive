@@ -20,7 +20,8 @@ def install(package):
 # List of required packages for the application
 required_packages = [
     "PyQt5",  # GUI framework for the application interface
-    "mysql-connector-python"  # MySQL database connector
+    "mysql-connector-python",  # MySQL database connector
+    "bcrypt"  # Password hashing library
 ]
 
 # Attempt to install each required package
