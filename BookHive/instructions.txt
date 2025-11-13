@@ -1,0 +1,92 @@
+BookHive Library Management System - Setup and Run Instructions
+================================================================
+
+This guide provides step-by-step instructions to set up and run the BookHive application from scratch.
+
+Prerequisites
+-------------
+Before starting, ensure you have the following installed on your system:
+
+1. Python 3.x (Download from https://www.python.org/downloads/)
+   - Make sure Python is added to your system PATH during installation.
+
+2. MySQL Server (Download from https://dev.mysql.com/downloads/mysql/)
+   - Install and start the MySQL service.
+   - Note the root password you set during installation (default is often empty, but in this app it's set to "1234" in db.py).
+
+3. Git (optional, if cloning from repository)
+
+Step 1: Install Python Dependencies
+-----------------------------------
+The application requires PyQt5 for the GUI and mysql-connector-python for database connectivity.
+
+1. Open a command prompt or terminal.
+2. Navigate to the BookHive project directory:
+   cd c:/Users/chris/Downloads/BookHive
+
+3. Run the dependency installation script:
+   python python_codes/install_dependencies.py
+
+   This will automatically install:
+   - PyQt5 (GUI framework)
+   - mysql-connector-python (MySQL database connector)
+
+   You should see confirmation messages for successful installations.
+
+Step 2: Set Up the Database
+---------------------------
+The application uses a MySQL database named "BookHiveDB".
+
+1. Ensure MySQL server is running on your system.
+
+2. Open MySQL Command Line Client or any MySQL client tool (like MySQL Workbench).
+
+3. Run the database setup script:
+   - If using MySQL Command Line Client:
+     mysql -u root -p < database/BookHive.sql
+     (Enter your MySQL root password when prompted)
+
+   - If using MySQL Workbench or another GUI tool:
+     - Open the tool and connect to your MySQL server
+     - Open and execute the file: database/BookHive.sql
+
+   This will:
+   - Drop any existing BookHiveDB database
+   - Create a new BookHiveDB database
+   - Create all necessary tables: Suppliers, Books, Students, Librarians, BookOrders, Borrowed, Returned
+
+Step 3: Run the Application
+---------------------------
+1. In the command prompt or terminal, ensure you're in the BookHive directory:
+   cd c:/Users/chris/Downloads/BookHive
+
+2. Launch the application:
+   python python_codes/app.py
+
+3. The BookHive login window should appear.
+
+4. Use the application:
+   - Students can register new accounts or login with existing credentials
+   - Librarians can register with the password:IamalibrarianatTIP and login with their credentials
+   - Both user types have access to their respective dashboards for library management
+
+Troubleshooting
+---------------
+- If you encounter database connection errors, verify:
+  - MySQL server is running
+  - The root password in db.py matches your MySQL setup (currently set to "1234")
+  - The database "BookHiveDB" was created successfully
+
+- If PyQt5 installation fails, you may need to install additional system dependencies:
+  - On Windows: Install Microsoft Visual C++ Redistributable
+  - On Linux: Install python3-pyqt5 package via package manager
+
+- Ensure all Python files are in the correct directory structure as provided.
+
+Notes
+-----
+- The application uses bcrypt for password hashing, so registered passwords are securely stored.
+- Default database credentials are hardcoded in db.py for simplicity.
+- For production use, consider using environment variables for sensitive information.
+
+For any issues or questions, refer to the individual Python files for more details on functionality.
